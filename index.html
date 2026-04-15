@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHME Token Airdrop</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: #1e293b; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; width: 350px; }
+        h1 { color: #38bdf8; margin-bottom: 10px; }
+        p { color: #94a3b8; font-size: 14px; }
+        button { background: #38bdf8; color: #0f172a; border: none; padding: 15px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; transition: 0.3s; margin-top: 20px; }
+        button:hover { background: #0ea5e9; transform: translateY(-2px); }
+        button:disabled { background: #475569; cursor: not-allowed; }
+        #status { margin-top: 15px; font-size: 13px; color: #fbbf24; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>CHME Claim</h1>
+    <p>Claim 888 CHME per Chroma Meleons NFT</p>
+    <hr style="border: 0.5px solid #334155; margin: 20px 0;">
+    
+    <button id="connectBtn">Connect Wallet</button>
+    <button id="claimBtn" style="display: none;">Claim CHME Tokens</button>
+    
+    <div id="status">Please connect your wallet to start.</div>
+</div>
+
+<script>
+    // --- এই অংশগুলো পরিবর্তন করুন ---
+    const contractAddress = "0xb08E597759e22F3cD99CB04d246e4AF4559c3a1B"; 
+    
+    // ক্লেম কন্ট্রাক্টের ABI (Remix-এর Compile ট্যাব থেকে কপি করে এখানে বসান)
+    const contractABI = [[
+	{
+		"inputs": [],
+		"name": "claim",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"name": "OwnableInvalidOwner",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			}
+		],
+		"name": "OwnableUnauthorizedAccount",
+		"type": "error"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "previousOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "OwnershipTransferred",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "withdrawRemainingTokens",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "chmeToken",
+		"outputs": [
+			{
+				"internalType": "contract IERC20",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "chromaNFT",
+		"outputs": [
+			{
+				"internalType": "contract IERC721",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "hasClaimed",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "TOKENS_PER_NFT",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+        "function claim() external",
+        "function hasClaimed(address) view returns (bool)",
+        "function chromaNFT() view returns (address)"
+    ];
+
+    let provider, signer, contract;
+
+    const connectBtn = document.getElementById('connectBtn');
+    const claimBtn = document.getElementById('claimBtn');
+    const status = document.getElementById('status');
+
+    async function connect() {
+        if (window.ethereum) {
+            try {
+                // Base Network Check (Chain ID: 8453)
+                const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+                if (chainId !== '0x2105') {
+                    status.innerText = "Please switch your MetaMask to Base Mainnet!";
+                    return;
+                }
+
+                provider = new ethers.BrowserProvider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                signer = await provider.getSigner();
+                const address = await signer.getAddress();
+
+                contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+                status.innerText = "Connected: " + address.substring(0,6) + "..." + address.substring(38);
+                connectBtn.style.display = 'none';
+                claimBtn.style.display = 'block';
+
+                // Check if already claimed
+                const claimed = await contract.hasClaimed(address);
+                if (claimed) {
+                    claimBtn.disabled = true;
+                    claimBtn.innerText = "Already Claimed";
+                    status.innerText = "You have already claimed your rewards.";
+                }
+
+            } catch (err) {
+                console.error(err);
+                status.innerText = "Connection failed.";
+            }
+        } else {
+            status.innerText = "Please install MetaMask!";
+        }
+    }
+
+    async function claimTokens() {
+        try {
+            status.innerText = "Sending transaction... please wait.";
+            const tx = await contract.claim();
+            status.innerText = "Transaction pending... hash: " + tx.hash.substring(0,10) + "...";
+            
+            await tx.wait();
+            
+            status.innerText = "Success! 888 CHME per NFT claimed!";
+            claimBtn.disabled = true;
+            claimBtn.innerText = "Claimed";
+        } catch (err) {
+            console.error(err);
+            status.innerText = "Error: " + (err.reason || "Transaction failed");
+        }
+    }
+
+    connectBtn.addEventListener('click', connect);
+    claimBtn.addEventListener('click', claimTokens);
+</script>
+
+</body>
+</html>
