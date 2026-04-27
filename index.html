@@ -3,15 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LilDrakes NFTs Art</title>
+    <title>LilDrakes | LILDRAKES Official Page</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --fire: #ff4500; --lava: #ff2200; --bg-black: #050000; }
+        :root { 
+            --fire: #ff4500; 
+            --lava: #ff2200; 
+            --bg-black: #050000; 
+            --glow: 0 0 20px #ff4500, 0 0 40px #ff2200;
+        }
         body { background-color: var(--bg-black); color: #ffffff; font-family: 'Rajdhani', sans-serif; margin: 0; overflow-x: hidden; }
         
         .page-content { 
-            background: linear-gradient(180deg, #000 60%, rgba(255, 69, 0, 0.25) 100%); 
+            background: radial-gradient(circle at center, rgba(255, 34, 0, 0.15) 0%, #000 70%);
             display: none;
         }
 
@@ -20,60 +25,53 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
         }
         
-        /* New Egg Image Style */
-        .egg-image {
-            width: 220px;
-            transition: transform 0.1s;
+        .fire-glow {
+            text-shadow: var(--glow);
+            animation: flicker 1.5s infinite alternate;
         }
 
+        @keyframes flicker {
+            0% { opacity: 0.8; text-shadow: 0 0 10px #ff4500; }
+            100% { opacity: 1; text-shadow: 0 0 30px #ff2200, 0 0 50px #ff4500; }
+        }
+
+        .egg-image { width: 220px; transition: transform 0.1s; }
         .hatch-flare {
             position: absolute; top: 50%; left: 50%; width: 0; height: 0;
             background: radial-gradient(circle, #fff 10%, var(--fire) 60%, transparent 100%);
             border-radius: 50%; transform: translate(-50%, -50%); transition: 0.8s; opacity: 0;
         }
-        .vibrate { animation: vibrate 0.1s infinite; }
-        @keyframes vibrate { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
-        .drawing-slant { transform: rotate(-5deg); margin: 50px -50px; display: flex; overflow: hidden; }
-        .nft-track { display: flex; gap: 20px; animation: moveGallery 25s linear infinite; }
+        .drawing-slant { transform: rotate(-3deg); margin: 60px -50px; display: flex; overflow: hidden; background: rgba(255, 69, 0, 0.05); padding: 20px 0; }
+        .nft-track { display: flex; gap: 20px; animation: moveGallery 30s linear infinite; }
         @keyframes moveGallery { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        .nft-box { width: 160px; height: 160px; border: 3px solid var(--fire); border-radius: 15px; flex-shrink: 0; box-shadow: 0 0 20px rgba(255, 69, 0, 0.4); }
+        .nft-box { width: 180px; height: 180px; border: 2px solid var(--fire); border-radius: 12px; flex-shrink: 0; box-shadow: 0 0 15px rgba(255, 69, 0, 0.3); }
 
-        #taskModal, #statusModal { 
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); 
-            z-index: 10000; align-items: center; justify-content: center; 
-            backdrop-filter: blur(15px); padding: 15px;
+        .btn-mint {
+            background: linear-gradient(90deg, #ff4500, #ff2200);
+            color: white; padding: 18px; border-radius: 12px;
+            font-family: 'Russo One'; box-shadow: var(--glow); transition: 0.3s;
+            width: 100%; font-size: 18px; text-transform: uppercase;
         }
-        .mission-card { 
-            background: #0a0a0a; border: 2px solid var(--fire); padding: 25px; 
-            width: 100%; max-width: 420px; border-radius: 25px; 
-            box-shadow: 0 0 60px rgba(255, 69, 0, 0.4); box-sizing: border-box;
-        }
-        
-        .task-row { 
-            display: flex; justify-content: space-between; align-items: center; width: 100%; 
-            background: #111; border: 1px solid #333; padding: 12px 15px; margin-bottom: 10px; 
-            border-radius: 15px; transition: 0.4s; font-weight: bold; font-size: 14px; box-sizing: border-box;
-        }
-        .task-row.completed { border-color: #00ff88; color: #00ff88; background: rgba(0, 255, 136, 0.08); box-shadow: inset 0 0 10px rgba(0,255,136,0.2); }
-        
-        .glow-input {
-            width: 100%; background: #000; border: 1px solid #444; padding: 14px; margin: 12px 0;
-            border-radius: 12px; outline: none; transition: 0.3s; color: #fff; border-left: 4px solid var(--fire);
-            box-sizing: border-box;
-        }
-        .glow-input:focus { border-color: var(--fire); box-shadow: 0 0 15px var(--fire); }
+        .btn-mint:hover { transform: scale(1.05); box-shadow: 0 0 30px #ff4500; }
 
-        .btn-action {
-            background: var(--lava); color: white; padding: 16px; border-radius: 15px;
-            font-family: 'Russo One'; box-shadow: 0 5px 20px rgba(255, 34, 0, 0.5); transition: 0.3s;
-            width: 100%; font-size: 16px; box-sizing: border-box;
+        .btn-closed {
+            background: #1a1a1a; border: 1px solid #333; color: #555;
+            padding: 18px; border-radius: 12px; width: 100%; cursor: not-allowed;
+            font-family: 'Russo One'; text-transform: uppercase;
         }
-        .btn-action:disabled { background: #333; box-shadow: none; cursor: not-allowed; opacity: 0.6; }
 
-        .step { display: none; } .step.active { display: block; }
-        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .info-item { background: #111; padding: 15px; border-radius: 20px; border: 1px solid #222; text-align: center; }
+        .staking-card {
+            background: linear-gradient(145deg, #0a0a0a, #150500);
+            border: 1px solid rgba(255, 69, 0, 0.2);
+            transition: 0.4s;
+        }
+        .staking-card:hover { border-color: var(--fire); box-shadow: 0 0 20px rgba(255, 69, 0, 0.1); }
+
+        #stakingModal { 
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); 
+            z-index: 10000; align-items: center; justify-content: center; backdrop-filter: blur(10px);
+        }
     </style>
 </head>
 <body>
@@ -81,16 +79,17 @@
     <div id="entrance" onclick="hatchSequence()">
         <div class="hatch-flare" id="flare"></div>
         <img src="https://i.ibb.co.com/JWBTn3B0/file-00000000603071fa99f1ad748bd6ad0e.png" id="eggImg" class="egg-image">
-        <p class="mt-12 font-bold text-zinc-600 tracking-[6px] animate-pulse">TAP TO HATCH</p>
+        <p class="mt-12 font-bold text-orange-600 tracking-[6px] animate-pulse fire-glow">TAP TO HATCH</p>
     </div>
 
     <div class="page-content" id="mainUI">
-        <div class="bg-orange-600 text-black py-1.5 font-bold text-center text-xs tracking-widest overflow-hidden">
-            <marquee scrollamount="8" direction="right">FREE MINT • FREE MINT • FREE MINT • FREE MINT • FREE MINT • FREE MINT • FREE MINT • FREE MINT • FREE MINT • FREE MINT •</marquee>
+        <div class="bg-orange-600 text-black py-1.5 font-bold text-center text-xs tracking-[0.2em] overflow-hidden">
+            <marquee scrollamount="10">LILDRAKES IS LIVE ON OPENSEA • MINT YOUR NFT NOW • 444 SUPPLY ONLY • BASE CHAIN •</marquee>
         </div>
 
-        <header class="container mx-auto px-6 pt-12 md:pt-20 text-center">
-            <h1 class="font-main text-6xl md:text-9xl -rotate-2 italic text-orange-600 drop-shadow-[0_0_30px_rgba(255,69,0,0.7)]" style="font-family:'Russo One'">LILDRAKES</h1>
+        <header class="container mx-auto px-4 pt-16 text-center">
+            <h1 class="font-main text-5xl sm:text-7xl md:text-9xl italic text-orange-600 fire-glow leading-tight" style="font-family:'Russo One'">LILDRAKES</h1>
+            <p class="text-zinc-400 mt-4 tracking-widest uppercase text-xs sm:text-sm">THE LILDRAKES ON BASE</p>
         </header>
 
         <div class="drawing-slant">
@@ -100,130 +99,100 @@
                 <img src="https://i.ibb.co.com/S7GP2FgY/20260410-042744.png" class="nft-box">
                 <img src="https://i.ibb.co.com/4Z0jqDXv/20260410-042832.png" class="nft-box">
                 <img src="https://i.ibb.co.com/XZnhyrT0/20260410-042533.png" class="nft-box">
+                <img src="https://i.ibb.co.com/XZnhyrT0/20260410-042533.png" class="nft-box">
+                <img src="https://i.ibb.co.com/chmw82jp/20260410-042646.png" class="nft-box">
             </div>
         </div>
 
         <div class="container mx-auto px-6 py-10 flex flex-col md:flex-row items-center gap-10">
-            <div class="flex-1 w-full bg-zinc-950/60 p-6 md:p-10 rounded-[40px] border border-zinc-800 backdrop-blur-md">
-                <h2 class="text-orange-500 font-bold mb-8 text-xl tracking-tighter text-center md:text-left">PROJECT DETAILS</h2>
-                <div class="info-grid">
-                    <div class="info-item"><span class="block text-zinc-500 text-xs uppercase">Total Supply</span><span class="text-white font-bold text-lg">444</span></div>
-                    <div class="info-item"><span class="block text-zinc-500 text-xs uppercase">Blockchain</span><span class="text-white font-bold text-lg">BASE</span></div>
-                    <div class="info-item"><span class="block text-zinc-500 text-xs uppercase">Mint Date</span><span class="text-white font-bold text-sm md:text-lg">27 APR, 12:00 UTC</span></div>
-                    <div class="info-item border-orange-900"><span class="block text-zinc-500 text-xs uppercase">Mint Price</span><span class="text-green-500 font-bold text-lg">GTD FREE</span></div>
+            <div class="flex-1 w-full bg-zinc-950/80 p-8 md:p-12 rounded-[30px] border border-orange-900/30">
+                <h2 class="text-orange-500 font-bold mb-8 text-2xl tracking-tighter">COLLECTION INFO</h2>
+                <div class="grid grid-cols-2 gap-6">
+                    <div><span class="block text-zinc-500 text-xs uppercase">Total Supply</span><span class="text-white font-bold text-2xl">444</span></div>
+                    <div><span class="block text-zinc-500 text-xs uppercase">Blockchain</span><span class="text-white font-bold text-2xl">BASE</span></div>
+                    <div><span class="block text-zinc-500 text-xs uppercase">Public Price</span><span class="text-green-500 font-bold text-xl">0.001 $ETH</span></div>
+                    <div><span class="block text-zinc-500 text-xs uppercase">GTD Price</span><span class="text-orange-500 font-bold text-xl">FREE</span></div>
                 </div>
             </div>
-            <div class="flex-1 text-center w-full space-y-4">
-                <button class="btn-action scale-110" onclick="openMission()">APPLY FOR GTD</button>
-                <button class="block w-full text-orange-500 font-bold text-sm tracking-widest border border-orange-500/30 py-3 rounded-xl hover:bg-orange-500/10" onclick="openStatus()">CHECK ELIGIBILITY</button>
+            <div class="flex-1 text-center w-full space-y-6">
+                <button class="btn-mint scale-105" onclick="window.open('https://opensea.io/collection/lildrakes/overview')">MINT ON OPENSEA</button>
+                <div class="space-y-2">
+                    <button class="btn-closed">GTD APPLICATION CLOSED</button>
+                    <p class="text-zinc-600 text-xs italic">The whitelist phase has officially ended. Public mint is now live!</p>
+                </div>
             </div>
         </div>
 
-        <section class="container mx-auto px-6 py-20">
-            <h3 class="font-bold text-4xl mb-16 text-center text-orange-600">ROADMAP</h3>
-            <div class="grid md:grid-cols-3 gap-10">
-                <div class="p-8 bg-zinc-900/40 border-l-4 border-orange-600 rounded-r-2xl"><span class="text-orange-600 font-black text-4xl opacity-20">01</span><p class="mt-4 text-zinc-300">Launch 444 Drakes on Base Chain. Building our primal community.</p></div>
-                <div class="p-8 bg-zinc-900/40 border-l-4 border-orange-600 rounded-r-2xl"><span class="text-orange-600 font-black text-4xl opacity-20">02</span><p class="mt-4 text-zinc-300">Marketplace listing and exclusive rewards for our holders.</p></div>
-                <div class="p-8 bg-zinc-900/40 border-l-4 border-orange-600 rounded-r-2xl"><span class="text-orange-600 font-black text-4xl opacity-20">03</span><p class="mt-4 text-zinc-300">Staking goes live. Earn daily $FIRE rewards by holding your Drakes.</p></div>
+        <section class="container mx-auto px-6 py-24">
+            <h3 class="font-bold text-5xl mb-20 text-center text-orange-600 fire-glow">THE ASCENSION ROADMAP</h3>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="p-10 staking-card rounded-3xl border-t-4 border-t-orange-600">
+                    <div class="text-orange-600 font-black text-5xl mb-6">01</div>
+                    <h4 class="text-xl font-bold mb-4">Genesis Hatching</h4>
+                    <p class="text-zinc-400 leading-relaxed">The emergence of 444 unique LILDRAKES on the Base network. We aren't just building a collection; we are forging a tribe of diamond-handed believers.</p>
+                </div>
+                <div class="p-10 staking-card rounded-3xl border-t-4 border-t-orange-600">
+                    <div class="text-orange-600 font-black text-5xl mb-6">02</div>
+                    <h4 class="text-xl font-bold mb-4">Apex Integration</h4>
+                    <p class="text-zinc-400 leading-relaxed">Immediate secondary market listings and rarity verification. Holder-exclusive alpha channels and surprise airdrops for those who brave the fire.</p>
+                </div>
+                <div class="p-10 staking-card rounded-3xl border-t-4 border-t-orange-600">
+                    <div class="text-orange-600 font-black text-5xl mb-6">03</div>
+                    <h4 class="text-xl font-bold mb-4">NFT Staking</h4>
+                    <p class="text-zinc-400 leading-relaxed">The $FIRE begins to burn. Deploy your LILDRAKES into the staking vault to yield daily rewards, securing your place in the future ecosystem.</p>
+                </div>
             </div>
         </section>
 
-        <div class="drawing-slant" style="transform: rotate(5deg);">
-            <div class="nft-track" style="animation-direction: reverse;">
-                <img src="https://i.ibb.co.com/XZnhyrT0/20260410-042533.png" class="nft-box">
-                <img src="https://i.ibb.co.com/chmw82jp/20260410-042646.png" class="nft-box">
-                <img src="https://i.ibb.co.com/S7GP2FgY/20260410-042744.png" class="nft-box">
-                <img src="https://i.ibb.co.com/4Z0jqDXv/20260410-042832.png" class="nft-box">
-                <img src="https://i.ibb.co.com/XZnhyrT0/20260410-042533.png" class="nft-box">
+        <section class="container mx-auto px-6 py-20 mb-20 text-center">
+            <div class="bg-gradient-to-b from-zinc-900 to-black p-12 rounded-[50px] border border-orange-600/20">
+                <h3 class="text-4xl font-bold mb-6 text-white uppercase tracking-widest">NFT Staking</h3>
+                <p class="text-zinc-400 max-w-2xl mx-auto mb-10">
+                    Turn your LILDRAKES into passive power. By locking your NFTs in our secure vault, you earn <b>$FIRE</b> tokens daily. 
+                    Higher rarity NFTs will command a greater yield of the flame.
+                </p>
+                <button class="bg-zinc-800 text-zinc-500 px-10 py-4 rounded-2xl font-bold cursor-not-allowed border border-zinc-700" onclick="showStakingInfo()">
+                    SYSTEM OFFLINE: OPENING SOON
+                </button>
+                <p class="mt-4 text-orange-500/50 text-xs font-bold tracking-tighter uppercase">Available for holders after 100% mint sell-out</p>
             </div>
-        </div>
+        </section>
 
-        <footer class="py-20 text-center">
-            <button class="bg-blue-600 px-12 py-4 rounded-full font-bold shadow-xl hover:bg-blue-500 transition" onclick="window.open('https://x.com/LilDrakesNFT')">FOLLOW US ON X</button>
-            <p class="mt-10 text-zinc-700 text-xs">© 2026 LILDRAKES | POWERED BY BASE</p>
+        <footer class="py-20 text-center bg-black">
+            <button class="bg-blue-600 hover:bg-blue-500 px-16 py-5 rounded-full font-bold shadow-[0_0_30px_rgba(37,99,235,0.4)] transition-all" onclick="window.open('https://x.com/LilDrakesNFT')">JOIN THE TRIBE ON X</button>
+            <div class="mt-16 flex flex-wrap justify-center gap-6 text-zinc-500 text-sm font-bold uppercase tracking-widest">
+                <span>444 Supply</span>
+                <span>$Base Chain</span>
+                <span>Verified Contract</span>
+            </div>
+            <p class="mt-10 text-zinc-800 text-xs">© 2026 LILDRAKES | POWERED BY BASE</p>
         </footer>
     </div>
 
-    <div id="taskModal">
-        <div class="mission-card">
-            <div class="flex justify-between items-center mb-8">
-                <h4 class="font-bold text-orange-500 text-xl">GTD MISSION</h4>
-                <button onclick="closeMission()" class="text-zinc-500 text-2xl">✕</button>
+    <div id="stakingModal" onclick="this.style.display='none'">
+        <div class="bg-zinc-950 border-2 border-orange-600 p-10 rounded-3xl max-w-md text-center m-4" onclick="event.stopPropagation()">
+            <div class="w-20 h-20 bg-orange-600/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span class="text-orange-600 text-4xl">🔥</span>
             </div>
-
-            <div id="st1" class="step active">
-                <p class="text-xs text-zinc-500 mb-4 uppercase">Step 1: Follow our accounts</p>
-                <button class="task-row" onclick="visitAndMark(this, 's1', 'https://x.com/intent/follow?screen_name=LilDrakesNFT')"><span class="truncate pr-2">Follow @LilDrakesNFT</span> <span class="go-btn min-w-[30px] text-right">GO</span></button>
-                <button class="task-row" onclick="visitAndMark(this, 's1', 'https://x.com/intent/follow?screen_name=alexmoou')"><span class="truncate pr-2">Follow @Alexmoou</span> <span class="go-btn min-w-[30px] text-right">GO</span></button>
-                <button id="btn1" class="btn-action mt-6" disabled onclick="go(1, 2)">NEXT MISSION</button>
-            </div>
-
-            <div id="st2" class="step">
-                <p class="text-xs text-zinc-500 mb-4 uppercase">Step 2: Engage with us</p>
-                <button class="task-row" onclick="visitAndMark(this, 's2', 'https://x.com/intent/like?tweet_id=2048001364786393458')"><span class="truncate pr-2">Like Pinned Post</span> <span class="go-btn min-w-[30px] text-right">GO</span></button>
-                <button class="task-row" onclick="visitAndMark(this, 's2', 'https://x.com/intent/retweet?tweet_id=2048001364786393458')"><span class="truncate pr-2">Repost Pinned Post</span> <span class="go-btn min-w-[30px] text-right">GO</span></button>
-                <button id="btn2" class="btn-action mt-6" disabled onclick="go(2, 3)">NEXT MISSION</button>
-            </div>
-
-            <div id="st3" class="step">
-                <p class="text-xs text-zinc-500 mb-4 uppercase">Step 3: Post a Comment</p>
-                <button class="task-row mb-2" onclick="window.open('https://x.com/intent/tweet?in_reply_to=2048001364786393458&text=%40friend1%20%40friend2%0AYourWalletAddress')">Comment on Pinned Post</button>
-                <input type="text" id="comInp" class="glow-input" placeholder="Paste your comment link here..." oninput="valInput('comInp', 'btn3')">
-                <button id="btn3" class="btn-action mt-6" disabled onclick="go(3, 4)">NEXT MISSION</button>
-            </div>
-
-            <div id="st4" class="step">
-                <p class="text-xs text-zinc-500 mb-4 uppercase">Step 4: Quote the Post</p>
-                <button class="task-row mb-2" onclick="window.open('https://twitter.com/intent/tweet?text=@LilDrakesNFT%20is%20live%20on%20Base.%0A%0ATotal%20Supply%3A%20444%0AMint%20Date%3A%20April%2027%2C%2012%3A00%20UTC%0AMint%20Price%3A%20GTD%20Free%0A%0AApply%20for%20GTD%3A%0Ahttps%3A%2F%2Flildrakes.fun%2F%0A%0AMint%20Page%3A%0Ahttps%3A%2F%2Fopensea.io%2Fcollection%2Flildrakes%2Foverview')">Quote Pinned Post</button>
-                <input type="text" id="quoInp" class="glow-input" placeholder="Paste your quote link here..." oninput="valInput('quoInp', 'btn4')">
-                <button id="btn4" class="btn-action mt-6" disabled onclick="go(4, 5)">FINAL STEP</button>
-            </div>
-
-            <div id="st5" class="step">
-                <p class="text-xs text-zinc-500 mb-4 uppercase">Final Step: Your Info</p>
-                <input type="text" id="userX" class="glow-input" placeholder="Your Twitter Handle (@...)" oninput="valFinal()">
-                <input type="text" id="addr" class="glow-input" placeholder="Base Wallet Address (0x...)" oninput="valFinal()">
-                <button id="subBtn" class="btn-action mt-6" disabled onclick="complete()">SUBMIT APPLICATION</button>
-            </div>
-
-            <div id="success" class="step text-center">
-                <div class="text-green-500 text-6xl mb-4">✓</div>
-                <h5 class="font-bold text-2xl mb-4">SUBMITTED!</h5>
-                <p class="text-zinc-300 text-sm leading-relaxed">
-                    If you have completed all the tasks correctly, you will be eligible. You can verify this by clicking the <b>CHECK ELIGIBILITY</b> button. Data is updated every 10 minutes.
-                    <br><br>
-                    <span class="text-orange-400 text-xs italic">Note: All bot and fake accounts will be disqualified.</span>
-                </p>
-                <button class="bg-blue-600 w-full py-3 rounded-xl mt-6 font-bold text-sm" onclick="window.open('https://x.com/LilDrakesNFT')">FOLLOW @LilDrakes ON X</button>
-                <button class="btn-action mt-4" onclick="location.reload()">FINISH</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="statusModal">
-        <div class="mission-card">
-            <div class="flex justify-between items-center mb-8">
-                <h4 class="font-bold text-orange-500 text-xl">CHECK STATUS</h4>
-                <button onclick="closeStatus()" class="text-zinc-500 text-2xl">✕</button>
-            </div>
-            <input type="text" id="checkX" class="glow-input" placeholder="Enter Twitter Handle (@...)">
-            <button id="chkBtn" class="btn-action mt-2" onclick="checkUserStatus()">CHECK ELIGIBILITY</button>
-            <div id="statusResult" class="mt-8 text-center font-bold text-lg"></div>
+            <h4 class="text-2xl font-bold mb-4 text-orange-500">STAKING OVERVIEW</h4>
+            <ul class="text-left text-zinc-300 space-y-4 text-sm mb-8">
+                <li class="flex items-start gap-2"><span>•</span> <span><b>Earn $FIRE:</b> The primary utility token of the LILDRAKES world.</span></li>
+                <li class="flex items-start gap-2"><span>•</span> <span><b>No Lock-up:</b> Stake and unstake whenever you please (Gas applies).</span></li>
+                <li class="flex items-start gap-2"><span>•</span> <span><b>Multiplier:</b> Holding 5+ NFTs grants a 1.5x yield boost.</span></li>
+            </ul>
+            <button class="btn-mint" onclick="document.getElementById('stakingModal').style.display='none'">UNDERSTOOD</button>
         </div>
     </div>
 
     <script>
-        // আপনার গুগল স্ক্রিপ্ট URL এখানে দিন
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxfjPtjXXX5vJxZwx3OFDXRM7kNmZaB9khcEqEdW3V7r1Jig7eE5f9AOuh_oNOveBFEaA/exec";
-
         function hatchSequence() {
             const egg = document.getElementById('eggImg');
             const flare = document.getElementById('flare');
             egg.classList.add('vibrate');
             
             setTimeout(() => {
-                flare.style.width = '1500px';
-                flare.style.height = '1500px';
+                flare.style.width = '2000px';
+                flare.style.height = '2000px';
                 flare.style.opacity = '1';
                 egg.style.transform = 'scale(0)';
                 
@@ -237,90 +206,8 @@
             }, 800);
         }
 
-        function openMission() { document.getElementById('taskModal').style.display = 'flex'; }
-        function closeMission() { document.getElementById('taskModal').style.display = 'none'; }
-        function openStatus() { document.getElementById('statusModal').style.display = 'flex'; }
-        function closeStatus() { document.getElementById('statusModal').style.display = 'none'; }
-
-        let count = { s1: 0, s2: 0 };
-        function visitAndMark(el, step, url) {
-            window.open(url, '_blank');
-            if(!el.classList.contains('completed')) {
-                el.classList.add('completed');
-                el.querySelector('.go-btn').innerText = '✓';
-                count[step]++;
-                if(step === 's1' && count.s1 >= 2) document.getElementById('btn1').disabled = false;
-                if(step === 's2' && count.s2 >= 2) document.getElementById('btn2').disabled = false;
-            }
-        }
-
-        function valInput(id, btnId) {
-            const v = document.getElementById(id).value;
-            document.getElementById(btnId).disabled = v.length < 10;
-        }
-
-        function valFinal() {
-            const u = document.getElementById('userX').value;
-            const a = document.getElementById('addr').value;
-            document.getElementById('subBtn').disabled = !(u.startsWith('@') && a.length > 30);
-        }
-
-        function go(c, n) {
-            document.getElementById('st' + c).classList.remove('active');
-            document.getElementById('st' + n).classList.add('active');
-        }
-
-        async function complete() {
-            const btn = document.getElementById('subBtn');
-            const twitter = document.getElementById('userX').value;
-            const address = document.getElementById('addr').value;
-            const comment = document.getElementById('comInp').value;
-            const quote = document.getElementById('quoInp').value;
-
-            btn.disabled = true;
-            btn.innerText = "SUBMITTING...";
-
-            try {
-                await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify({ twitter, address, comment, quote })
-                });
-                document.getElementById('st5').classList.remove('active');
-                document.getElementById('success').classList.add('active');
-            } catch (e) {
-                alert("Error! Try again.");
-                btn.disabled = false;
-            }
-        }
-
-        async function checkUserStatus() {
-            const user = document.getElementById('checkX').value;
-            const resDiv = document.getElementById('statusResult');
-            const btn = document.getElementById('chkBtn');
-            
-            if(!user.startsWith('@')) return alert("Enter handle with @");
-            
-            btn.disabled = true;
-            resDiv.innerText = "Checking...";
-            
-            try {
-                const response = await fetch(`${SCRIPT_URL}?twitter=${encodeURIComponent(user)}`);
-                const status = await response.text();
-                
-                if(status === "Eligible") {
-                    resDiv.innerHTML = `<span class="text-green-500">CONGRATS! YOU ARE ELIGIBLE ✅</span>`;
-                } else if(status === "Not Eligible") {
-                    resDiv.innerHTML = `<span class="text-red-500">SORRY! YOU ARE NOT ELIGIBLE ❌</span>`;
-                } else if(status === "Pending") {
-                    resDiv.innerHTML = `<span class="text-yellow-500">STILL UNDER REVIEW ⏳</span>`;
-                } else {
-                    resDiv.innerHTML = `<span class="text-zinc-500">USER NOT FOUND 🔍</span>`;
-                }
-            } catch (e) {
-                resDiv.innerText = "Error checking status.";
-            }
-            btn.disabled = false;
+        function showStakingInfo() {
+            document.getElementById('stakingModal').style.display = 'flex';
         }
     </script>
 </body>
